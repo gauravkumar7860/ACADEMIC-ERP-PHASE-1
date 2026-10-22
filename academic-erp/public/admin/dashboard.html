@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Admin — Academic ERP</title><link rel="stylesheet" href="/css/style.css"></head>
+<body><div class="app-shell">
+  <div class="sidebar">
+    <div class="brand">Academic ERP</div><div class="brand-sub">Administration</div>
+    <nav>
+      <button data-tab="overview" class="active">Overview</button>
+      <button data-tab="students">Students</button>
+      <button data-tab="bulkImport">Bulk Import</button>
+      <button data-tab="faculty">Faculty</button>
+      <button data-tab="auditLog">Audit Log</button>
+    </nav>
+    <div class="who">Signed in as <strong id="whoName">…</strong><div><button id="logoutBtn">Sign out</button></div></div>
+  </div>
+  <div class="main">
+    <section id="tab-overview"></section><section id="tab-students" style="display:none"></section>
+    <section id="tab-bulkImport" style="display:none"></section><section id="tab-faculty" style="display:none"></section>
+    <section id="tab-auditLog" style="display:none"></section>
+  </div>
+</div>
+<script src="/js/api.js"></script><script src="/admin/js/dashboard.js"></script></body></html>

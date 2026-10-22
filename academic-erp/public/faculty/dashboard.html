@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Faculty — Academic ERP</title><link rel="stylesheet" href="/css/style.css"></head>
+<body><div class="app-shell">
+  <div class="sidebar"><div class="brand">Academic ERP</div><div class="brand-sub">Faculty</div>
+    <nav><button class="active">My profile</button></nav>
+    <div class="who">Signed in as <strong id="whoName">…</strong><div><button id="logoutBtn">Sign out</button></div></div></div>
+  <div class="main"><h2>My profile</h2><div id="profileBox" class="panel">Loading…</div>
+    <div class="panel muted">More modules (attendance, assignments, tests, leave, results) appear here as later phases ship.</div></div>
+</div>
+<script src="/js/api.js"></script>
+<script>
+const ROLE = 'faculty';
+document.getElementById('logoutBtn').addEventListener('click', async () => { await api('/auth/logout', { method: 'POST' }); location.href = '/login.html'; });
+async function init() {
+  const me = await api('/auth/me');
+  if (me.user.role !== ROLE) { location.href = '/login.html'; return; }
+  document.getElementById('whoName').textContent = me.user.username;
+  const box = document.getElementById('profileBox');
+  if (ROLE === 'student') {
+    const { student: s } = await api('/student/profile');
+    box.innerHTML = '<div class="card-row"><div class="stat-card"><div class="n" style="font-size:20px">' + esc(s.student_id_no) + '</div><div class="label">Student ID</div></div>'
+      + '<div class="stat-card"><div class="n" style="font-size:20px">' + esc(s.roll_number) + '</div><div class="label">Roll number</div></div>'
+      + '<div class="stat-card"><div class="n" style="font-size:20px">' + esc(s.programme_code) + ', Sem ' + esc(s.semester) + (s.section_name ? ', Sec ' + esc(s.section_name) : '') + '</div><div class="label">Programme</div></div></div>'
+      + '<h3 style="font-size:16px">' + esc(s.name) + '</h3><p class="hint">' + esc(s.department_name) + '</p>'
+      + '<div class="field" style="max-width:280px"><label>Mobile</label><input id="mobileInput" value="' + esc(s.mobile) + '"></div>'
+      + '<div class="field" style="max-width:420px"><label>Address</label><input id="addressInput" value="' + esc(s.address) + '"></div>'
+      + '<button class="btn" id="saveBtn">Save changes</button> <span class="hint" id="saveMsg"></span>';
+    document.getElementById('saveBtn').addEventListener('click', async () => {
+      const m = document.getElementById('saveMsg');
+      try { await api('/student/profile', { method: 'PATCH', body: { mobile: mobileInput.value.trim(), address: addressInput.value.trim() } }); m.textContent = 'Saved.'; }
+      catch (e) { m.textContent = e.message; }
+    });
+  } else {
+    const { faculty: f } = await api('/faculty/profile');
+    box.innerHTML = '<h3 style="font-size:16px">' + esc(f.name) + '</h3><p class="hint">' + esc(f.designation || '') + ' ' + esc(f.department_name) + '</p><p>Employee ID: ' + esc(f.employee_id) + '</p><p>Mobile: ' + esc(f.mobile || '—') + '</p>';
+  }
+}
+init().catch((e) => { document.getElementById('profileBox').textContent = e.message; });
+</script></body></html>

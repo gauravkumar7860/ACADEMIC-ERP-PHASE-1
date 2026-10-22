@@ -1,0 +1,6 @@
+student_id_no,roll_number,name,fathers_name,mothers_name,dob,gender,mobile,email,programme_code,semester,section_name,admission_year,address
+STU2026001,BCA26A01,Aarav Sharma,Rajesh Sharma,Meena Sharma,2005-04-12,Male,9876500001,aarav.sharma@example.edu,BCA,5,A,2024,"Sangrur, Punjab"
+STU2026002,BCA26A02,Simran Kaur,Baljit Singh,Harpreet Kaur,2005-07-03,Female,9876500002,simran.kaur@example.edu,BCA,5,A,2024,"Patiala, Punjab"
+STU2026003,BCA26A02,Rohan Verma,Suresh Verma,Anita Verma,2005-01-19,Male,9876500003,rohan.verma@example.edu,BCA,5,A,2024,"Ludhiana, Punjab"
+STU2026004,BCA26B01,Priya Singh,Manpreet Singh,Gurpreet Kaur,2005-09-22,Female,987650000X,priya.singh@example.edu,BCA,5,B,2024,"Bathinda, Punjab"
+STU2026005,BCA26B02,Karan Mehta,Anil Mehta,Sunita Mehta,2005-02-28,Male,9876500005,karan.mehta@example.edu,BCA,9,B,2022,"Barnala, Punjab"

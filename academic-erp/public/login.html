@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Sign in — Academic ERP</title><link rel="stylesheet" href="/css/style.css"></head>
+<body><div class="center-page"><div class="auth-box">
+  <h1>Academic ERP</h1><div class="sub">Sign in with your institutional account</div>
+  <form id="loginForm">
+    <div class="field"><label for="username">Username</label><input id="username" autocomplete="username" required></div>
+    <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required></div>
+    <button class="btn" type="submit" style="width:100%">Sign in</button>
+    <div class="error-text" id="loginError" style="display:none"></div>
+  </form>
+  <div style="margin-top:16px"><a href="#" id="forgotLink" class="hint">Forgot your password?</a></div>
+  <div id="forgotBox" style="display:none;margin-top:14px">
+    <div class="field"><label for="forgotUsername">Username</label><input id="forgotUsername"></div>
+    <button class="btn secondary" id="forgotSubmit" type="button">Request reset link</button>
+    <div class="hint" id="forgotResult" style="margin-top:10px;word-break:break-all"></div>
+  </div>
+</div></div>
+<script src="/js/api.js"></script>
+<script>
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const box = document.getElementById('loginError'); box.style.display = 'none';
+  try {
+    const d = await api('/auth/login', { method: 'POST', body: { username: username.value, password: password.value } });
+    location.href = d.mustChangePassword ? '/change-password.html' : (ROLE_HOME[d.user.role] || '/login.html');
+  } catch (err) { box.textContent = err.message; box.style.display = 'block'; }
+});
+forgotLink.addEventListener('click', (e) => { e.preventDefault(); forgotBox.style.display = 'block'; });
+forgotSubmit.addEventListener('click', async () => {
+  try {
+    const d = await api('/auth/forgot-password', { method: 'POST', body: { username: forgotUsername.value } });
+    forgotResult.textContent = d.message + (d.devResetToken ? ' (dev token: ' + d.devResetToken + ')' : '');
+  } catch (err) { forgotResult.textContent = err.message; }
+});
+</script></body></html>
